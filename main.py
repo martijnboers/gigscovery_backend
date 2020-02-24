@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from enum import Enum
+
 gigscovery_app = FastAPI()
 
 @gigscovery_app.get("/")
@@ -14,10 +16,18 @@ async def read_user_me():
 async def read_user(user_id: str):
     return {"user_id": 1508}
 
+
+
+class ModelName(str, Enum):
+    alexnet = "alexnet"
+    resnet = "resnet"
+    lenet = "lenet"
+
+
 @gigscovery_app.get("/model/{model_name}")
 async def get_model(model_name: ModelName):
     if model_name == ModelName.alexnet:
-        return {"model_name": model_name, "message": "We are awesome"}
+        return {"model_name": model_name, "message": "Deep Learning FTW!"}
     if model_name.value == "lenet":
         return {"model_name": model_name, "message": "LeCNN all the images"}
-        return {"model_name": model_name, "message": "Have some residuals"}
+    return {"model_name": model_name, "message": "Have some residuals"}
