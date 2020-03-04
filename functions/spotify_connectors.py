@@ -7,7 +7,7 @@ os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
 os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(),
-                     auth="BQCMNjsp7rWYKtMoyAmZkTY28mVsTPKZW_ml78OVALDY_YWo0Pk8cXnGtHo-md_feLZn5jwUSvXst32HFGBO8oyaca9ApSNKcYloELvlFpBL-gQhghCGahgz5TfItvh3MkSDwgKrntBoh4gwL2aGisUXDXx5nvVBNJED0S_X26X3OBI")
+                     auth="BQAfIkfWRJPzplvy3AHtj5hNvMTBbAPhRStqGe_NKdMrUBz-9VmIk4dClM0XU9uHoQYsIh9dAGcQyOq3DVkWmxpmZinhkOiFN2zGWrKULfuNyUsvKg4TaIjjpYfG8vTqY1NqL0rfiZPqwtj1i9ePhJfjtz0938RqtCzrO4ck4jfxN7Y")
 
 
 def name():
