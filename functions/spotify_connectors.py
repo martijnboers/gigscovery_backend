@@ -7,7 +7,7 @@ os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
 os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(),
-                     auth="BQAfIkfWRJPzplvy3AHtj5hNvMTBbAPhRStqGe_NKdMrUBz-9VmIk4dClM0XU9uHoQYsIh9dAGcQyOq3DVkWmxpmZinhkOiFN2zGWrKULfuNyUsvKg4TaIjjpYfG8vTqY1NqL0rfiZPqwtj1i9ePhJfjtz0938RqtCzrO4ck4jfxN7Y")
+                     auth="BQCe5-7YcMtZAilx31It3i0yBe2PRQwp0IOKFNS64UrE_th0h5JtMr1TmXZGEp5dj3qPQKmRIiDzNiF9QqOh1zQe7zWGLIi_a_YujdoHNx_z_bZmNKeoDIMJWyHFWaBTR51ssRYvKOtO_OHtWHU9PXrackBBV9ViJ6tK5DBkCEaeoa4Hwr9YnAv20VnHMh-PNY3OFawMha4_MguIq7e3fmHsMnHz6JYFBEOfQDsZwvMoutG35I1d3qX_xsxUqvJBKjqCf91XfuLm")
 
 
 def name():
@@ -27,3 +27,49 @@ def prune_artist(artist):
             artist_dict[key]=value
     return artist_dict
 
+
+import random
+from itertools import chain
+
+def get_random_related_artists(artist_id, number_related_artists):
+    artist_related_artists = sp.artist_related_artists(artist_id)['artists']
+    new_related_artists = [prune_artist(artist) for artist in artist_related_artists]
+    random_artists = random.sample(new_related_artists, number_related_artists)
+    return random_artists
+
+def get_top_tracks_artist(artist_id):
+    top_tracks_artist = sp.artist_top_tracks(artist_id)['tracks']
+    return top_tracks_artist 
+
+def top_tracks_all_artists(number_of_top_artists, number_related_artists_sampled): 
+    top_artists = give_top_artists(number_of_top_artists)
+  
+    related_artists = [get_random_related_artists(artist['id'], number_related_artists_sampled) for artist in top_artists] 
+    related_artists = list(chain.from_iterable(related_artists))
+  
+    all_artists = top_artists + related_artists
+
+    toptracks_artists = [get_top_tracks_artist(artists['id']) for artists in all_artists]
+    toptracks_artists = list(chain.from_iterable(toptracks_artists))
+
+    return toptracks_artists
+
+
+def get_audio_features_tracks(list_all_artists):
+    features_all_tracks = [sp.audio_features(artist['id']) for artist in list_all_artists]
+    return features_all_tracks
+
+#ENDPOINT 1 GET_USERS_ARTIST(n_artists, n_related_artists, token)
+def user_artists(n_artist): 
+    
+    top_artists = give_top_artists(n_artist)
+
+    related_artists = [get_random_related_artists(artist['id'], n_artist) for artist in top_artists] 
+
+    related_artists = list(chain.from_iterable(related_artists))
+  
+    all_artists = top_artists + related_artists
+
+    return all_artists
+
+user_artists(2)
