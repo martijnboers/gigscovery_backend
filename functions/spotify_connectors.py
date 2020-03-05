@@ -59,7 +59,7 @@ def get_audio_features_tracks(list_all_artists):
     features_all_tracks = [sp.audio_features(artist['id']) for artist in list_all_artists]
     return features_all_tracks
 
-#ENDPOINT 1 GET_USERS_ARTIST(n_artists, n_related_artists, token)
+#ENDPOINT 1 GET_USERS_ARTIST(n_artist)
 def user_artists(n_artist): 
     
     top_artists = give_top_artists(n_artist)
