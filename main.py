@@ -1,6 +1,8 @@
+# ! pip install fastapi
+
 from fastapi import FastAPI
 from enum import Enum
-from functions.spotify_connectors import name, give_top_artists
+from functions.spotify_connectors import name, user_artists
 
 gigscovery_app = FastAPI()
 
@@ -20,7 +22,6 @@ async def read_user(user_id: str):
     return {"user_id": 1508}
 
 
-@gigscovery_app.get("/top_artists/{number_of_artists}")
-async def get_top_artists(number_of_artists: int):
-    return {"top_artists": give_top_artists(number_of_artists)}
-
+@gigscovery_app.get("/user_artists/{n_artists}")
+async def user_artists(n_artists: int):
+    return {"users_artists": user_artists(n_artists)}
