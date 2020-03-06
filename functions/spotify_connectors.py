@@ -2,6 +2,8 @@ import requests
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
+import random
+from itertools import chain
 
 os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
 os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
@@ -27,9 +29,6 @@ def prune_artist(artist):
             artist_dict[key]=value
     return artist_dict
 
-
-import random
-from itertools import chain
 
 def get_random_related_artists(artist_id, number_related_artists):
     artist_related_artists = sp.artist_related_artists(artist_id)['artists']
@@ -71,4 +70,4 @@ def user_artists(n_of_top_artists, n_related_artists):
     all_artists = top_artists + related_artists
 
     return all_artists
-# user_artists(2)
+
