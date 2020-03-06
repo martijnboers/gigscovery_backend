@@ -64,10 +64,10 @@ def get_audio_features_tracks(list_all_artists, token):
     features_all_tracks = [sp.audio_features(artist['id']) for artist in list_all_artists]
     return features_all_tracks
 
-#ENDPOINT 1 GET_USERS_ARTIST(n_artist)
+#ENDPOINT 1 GET_USERS_ARTIST(top artists + related artists )
 def user_artists(n_of_top_artists, n_related_artists, token):
 
-    top_artists = give_top_artists(n_of_top_artists, token)
+    top_artists = give_top_artists(n_of_top_artists, 'token')
 
     related_artists = [get_random_related_artists(artist['id'],  n_related_artists, token) for artist in top_artists]
 
@@ -77,3 +77,16 @@ def user_artists(n_of_top_artists, n_related_artists, token):
 
     return all_artists
 
+#ENDPOINT 2 GET USERS FEATURE SPACE (song features of tracks of all artists)
+def user_track_features(n_of_top_artists, n_related_artists, token):
+    
+    sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(),
+                         auth=token)
+    
+    all_artists = user_artists(n_of_top_artists, n_related_artists, token)
+    
+    toptracks_artists = [get_top_tracks_artist(artists['id']) for artists in all_artists]
+    toptracks_artists = list(chain.from_iterable(toptracks_artists))
+
+    features_all_tracks = [sp.audio_features(artist['id']) for artist in toptracks_artists]
+    return features_all_tracks

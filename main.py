@@ -3,7 +3,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from enum import Enum
-from functions.spotify_connectors import name, user_artists
+from functions.spotify_connectors import name, user_artists, user_track_features
 
 gigscovery_app = FastAPI()
 
@@ -44,5 +44,7 @@ async def read_user(user_id: str):
 async def user_artists_endpoint(token: str, n_of_top_artists: int = 5, n_related_artists : int = 5):
     return {"users_artists": user_artists(n_of_top_artists, n_related_artists, token)}
 
-#ENDPOINT 2: 
-
+#ENDPOINT 2: USER'S TRACKs FEATURE SPACE
+@gigscovery_app.get("/tracks/features")
+async def tracks_features_endpoint(token: str, n_of_top_artists: int = 5, n_related_artists : int = 5):
+    return {"audio_features": user_track_features(n_of_top_artists, n_related_artists, token)}
