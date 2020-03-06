@@ -7,7 +7,7 @@ os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
 os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(),
-                     auth="BQCe5-7YcMtZAilx31It3i0yBe2PRQwp0IOKFNS64UrE_th0h5JtMr1TmXZGEp5dj3qPQKmRIiDzNiF9QqOh1zQe7zWGLIi_a_YujdoHNx_z_bZmNKeoDIMJWyHFWaBTR51ssRYvKOtO_OHtWHU9PXrackBBV9ViJ6tK5DBkCEaeoa4Hwr9YnAv20VnHMh-PNY3OFawMha4_MguIq7e3fmHsMnHz6JYFBEOfQDsZwvMoutG35I1d3qX_xsxUqvJBKjqCf91XfuLm")
+                     auth="BQD5Ijj9AsbCADxF6RrUaijHCHACCrHj-Q1w7rguwjrVyLv6egC6Is-72fVP2A1ihWhmtPh0PQMMOcER5CZwi0wbe3EQc12Gq6DWM7gQjjDhJovtAmXZZamEbbC_PNrHc6odTzWWpgiDoX0V3yw9xHO2yx-jkm_N8MfPptjaIKuQ8gI7Krp2dPUlSjAObdXyM3yRSmuRX4Bcr3E9uMIWMo_SAAM1RKtXGAWSstcXkNu0jwdxVsFhjz5mHoiYxqjhcymUxszZxsPS")
 
 
 def name():
@@ -60,11 +60,11 @@ def get_audio_features_tracks(list_all_artists):
     return features_all_tracks
 
 #ENDPOINT 1 GET_USERS_ARTIST(n_artist)
-def user_artists(n_artist): 
-    
-    top_artists = give_top_artists(n_artist)
+def user_artists(n_of_top_artists, n_related_artists): 
+  
+    top_artists = give_top_artists(n_of_top_artists)
 
-    related_artists = [get_random_related_artists(artist['id'], n_artist) for artist in top_artists] 
+    related_artists = [get_random_related_artists(artist['id'],  n_related_artists) for artist in top_artists] 
 
     related_artists = list(chain.from_iterable(related_artists))
   
@@ -72,4 +72,5 @@ def user_artists(n_artist):
 
     return all_artists
 
-user_artists(2)
+
+user_artists(2,2)
