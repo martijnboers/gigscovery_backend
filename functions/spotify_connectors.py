@@ -7,7 +7,7 @@ os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
 os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(),
-                     auth="BQCe5-7YcMtZAilx31It3i0yBe2PRQwp0IOKFNS64UrE_th0h5JtMr1TmXZGEp5dj3qPQKmRIiDzNiF9QqOh1zQe7zWGLIi_a_YujdoHNx_z_bZmNKeoDIMJWyHFWaBTR51ssRYvKOtO_OHtWHU9PXrackBBV9ViJ6tK5DBkCEaeoa4Hwr9YnAv20VnHMh-PNY3OFawMha4_MguIq7e3fmHsMnHz6JYFBEOfQDsZwvMoutG35I1d3qX_xsxUqvJBKjqCf91XfuLm")
+                     auth="BQCQUiPYIQqE1tuh5gmWp4cmUiFpkVIjQOS8l7L3YcGQY1vR3vjEWcmBR2N6NGwlkTAwV0T9vAGSV4YVmNH4Z5fQI3xLiqYY_6MI43iv_vrXut9aKjSRFf242rWhna2EE2v7KXguJFjuYzCgxTWfz4hcgROguLkpsHCnuEJbtyNLNTA")
 
 
 def name():
@@ -71,5 +71,4 @@ def user_artists(n_artist):
     all_artists = top_artists + related_artists
 
     return all_artists
-
-user_artists(2)
+# user_artists(2)

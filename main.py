@@ -1,11 +1,28 @@
 # ! pip install fastapi
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from enum import Enum
 from functions.spotify_connectors import name, user_artists
 
 gigscovery_app = FastAPI()
 
+origins = [
+    "https://scoaring.com",
+    "https://www.scoaring.com",
+    "http://127.0.0.1:8000/",
+    "http://localhost",
+    "http://localhost:8000"
+]
+
+
+gigscovery_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[origins],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @gigscovery_app.get("/")
 async def root():
@@ -25,3 +42,4 @@ async def read_user(user_id: str):
 @gigscovery_app.get("/user_artists/{n_artists}")
 async def user_artists(n_artists: int):
     return {"users_artists": user_artists(n_artists)}
+
