@@ -41,8 +41,8 @@ async def read_user(user_id: str):
 
 #ENDPOINT 1: USERS ARTIST (TOP + RELATED)
 @gigscovery_app.get("/artists/get_user_artists")
-async def user_artists_endpoint(n_of_top_artists: int = 5, n_related_artists : int = 5):
-    return {"users_artists": user_artists(n_of_top_artists, n_related_artists)}
+async def user_artists_endpoint(token: str, n_of_top_artists: int = 5, n_related_artists : int = 5):
+    return {"users_artists": user_artists(n_of_top_artists, n_related_artists, token)}
 
 #ENDPOINT 2: 
 
