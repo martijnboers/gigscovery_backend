@@ -6,8 +6,8 @@ import os
 os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
 os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
 
-sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(),
-                     auth="BQDcjyZaEtiGns8NwpUDt0EbLk4fDlDTDJ7JenBRx5V0G79o2SXsAYQiPl4ncCniC0hj1tHDSHSyF6EYySrvxmbk04InMPulTAxcLzeBAxAF_5q2Qq-jUc3Xnd0hmc8QWXuCngf6T7HRXb424OB0Sb7BPIfOvR7v_1EMC2oDnYt2IC6rNuancRaT")
+# sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(),
+#                      auth="BQDcjyZaEtiGns8NwpUDt0EbLk4fDlDTDJ7JenBRx5V0G79o2SXsAYQiPl4ncCniC0hj1tHDSHSyF6EYySrvxmbk04InMPulTAxcLzeBAxAF_5q2Qq-jUc3Xnd0hmc8QWXuCngf6T7HRXb424OB0Sb7BPIfOvR7v_1EMC2oDnYt2IC6rNuancRaT")
 
 
 def name():
@@ -72,4 +72,4 @@ def user_artists(n_artist):
 
     return all_artists
 
-user_artists(2)
+# user_artists(2)
