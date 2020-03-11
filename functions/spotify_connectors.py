@@ -4,9 +4,17 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import os
 import random
 from itertools import chain
+from pprint import pprint
+from itertools import islice, chain
 
 os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
 os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
+
+
+def chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
 
 
 def name():
@@ -88,9 +96,26 @@ def user_track_features(n_of_top_artists, n_related_artists, token):
                          auth=token)
     
     all_artists = user_artists(n_of_top_artists, n_related_artists, token)
-    
+
     toptracks_artists = [get_top_tracks_artist(artists['id'], token) for artists in all_artists]
+
     toptracks_artists = list(chain.from_iterable(toptracks_artists))
 
-    features_all_tracks = [sp.audio_features(artist['id']) for artist in toptracks_artists]
-    return features_all_tracks
+    features_all_tracks = []
+
+    for chunk in chunks(toptracks_artists, 50):
+        features_all_tracks.extend(sp.audio_features([track["id"] for track in chunk]))
+
+    features_all_tracks_with_names = []
+
+    for features, track in zip(features_all_tracks, toptracks_artists):
+        features_new = features
+        features_new["artist_name"] = track['album']["artists"][0]["name"]
+        features_new["artist_id"] = track['album']["artists"][0]["id"]
+        features_new["track_name"] = track['name']
+        features_all_tracks_with_names.append(features_new)
+
+    return features_all_tracks_with_names
+
+# user_track_features(4, 4, "BQB5B9wwqYhxGWUd3zyy_JT8kWXVAhNytZSA7lA-cYr597HvOYJig0HRFO4yPeeojkYig7kTTb7z-wY0hKHKJLOAoAAJ2ji02ar8ZhsaQVXQPLSorTVi25mGms0PIXuSvwoHLatB89p2MxkvL-t8-nrPnJcS5EEfJsdF6m0NiZkGIV4")
+

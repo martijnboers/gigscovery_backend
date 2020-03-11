@@ -3,7 +3,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from enum import Enum
-from functions.spotify_connectors import name, user_artists
+from functions.spotify_connectors import name, user_artists, user_track_features
 from functions.bit_connectors import  get_concerts, get_artist_concerts
 
 

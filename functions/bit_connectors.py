@@ -1,6 +1,7 @@
 key = "bd482854c87eb7bc0c93d515ec3bbc29"
 
 from bandsintown import Client
+from math import asin, sqrt, sin, cos, pi
 
 client = Client(key)
 
@@ -58,8 +59,24 @@ def get_artist_concerts(artist_name, date_begin, date_end):
     return pruned_concerts
 
 
+def falls_within_latlong(latitude_venue, longitude_venue, latitude_city, longitude_city, radius=25):
+    latitude_city = (float(latitude_city) * pi) / 180
+    latitude_venue = (float(latitude_venue) * pi) / 180
+    longitude_venue = (float(longitude_venue) * pi) / 180
+    longitude_city = (float(longitude_city) * pi) / 180
+    d = 2 * asin(sqrt((sin((latitude_venue - latitude_city) / 2))**2 + cos(latitude_venue) * cos(latitude_city) * (sin((longitude_venue - longitude_city) / 2))**2))
+    distance = 6371 * d
+
+    if distance < radius:
+        return True
+    else:
+        return False
+
+
 def filter_concert_location(latitude, longitude, concert_list):
-    concerts_location = [item for item in concert_list if item["venue"]["latitude"] == latitude and item["venue"]["longitude"] == longitude]
+    concerts_location = [item for item in concert_list if
+                         falls_within_latlong(item["venue"]["latitude"], item["venue"]["longitude"], latitude,
+                                              longitude)]
     return concerts_location
 
 
@@ -68,3 +85,5 @@ def get_concerts(latitude, longitude, date_begin, date_end, artist):
     artist_location = filter_concert_location(latitude, longitude, artist_concerts)
     return artist_location
 
+
+# print(falls_within_latlong(48.194666, 11.608471, 48.141157, 11.581167))
