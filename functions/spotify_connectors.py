@@ -8,6 +8,7 @@ from itertools import chain
 os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
 os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
 
+
 def name():
     return "Natasha"
 
