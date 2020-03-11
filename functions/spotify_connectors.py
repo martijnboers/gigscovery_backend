@@ -59,9 +59,12 @@ def top_tracks_all_artists(number_of_top_artists, number_related_artists_sampled
 
 
 def get_audio_features_tracks(list_all_artists, token):
+
     sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(),
                          auth=token)
+
     features_all_tracks = [sp.audio_features(artist['id']) for artist in list_all_artists]
+
     return features_all_tracks
 
 #ENDPOINT 1 GET_USERS_ARTIST(n_artist)
