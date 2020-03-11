@@ -6,6 +6,7 @@ import random
 from itertools import chain
 from pprint import pprint
 from itertools import islice, chain
+from sklearn.preprocessing import normalize
 
 os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
 os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
@@ -89,6 +90,7 @@ def user_artists(n_of_top_artists, n_related_artists, token):
 
     return all_artists
 
+
 #ENDPOINT 2 GET USERS FEATURE SPACE (song features of tracks of all artists)
 def user_track_features(n_of_top_artists, n_related_artists, token):
     
@@ -117,5 +119,31 @@ def user_track_features(n_of_top_artists, n_related_artists, token):
 
     return features_all_tracks_with_names
 
-# user_track_features(4, 4, "BQB5B9wwqYhxGWUd3zyy_JT8kWXVAhNytZSA7lA-cYr597HvOYJig0HRFO4yPeeojkYig7kTTb7z-wY0hKHKJLOAoAAJ2ji02ar8ZhsaQVXQPLSorTVi25mGms0PIXuSvwoHLatB89p2MxkvL-t8-nrPnJcS5EEfJsdF6m0NiZkGIV4")
+
+def create_data_for_clustering(user_track_features):
+
+    data = [
+        [item["danceability"],
+         item["energy"],
+         item["key"],
+         item["loudness"],
+         item["mode"],
+         item["speechiness"],
+         item["acousticness"],
+         item["instrumentalness"],
+         item["liveness"],
+         item["valence"],
+         item["tempo"],
+         item["duration_ms"]
+         ]
+        for item in user_track_features
+    ]
+
+    normalized = normalize(data)
+
+    print(normalized)
+
+
+create_data_for_clustering(user_track_features(1, 1, "BQAcX-ae8sAYvZGY3yoN6d34waDqRaF70prux0UmbVDELZCqid1ZKsfdKAbaSAqP2-lAVONybJqt39fvAGcD740UA43LZCXONo5Nk5OjZN3ixuJWXX217m7VIvdG5lf5mSXdGb2_-CmgzmHyPABAxuWztC_oj5hEvzN5_wXjB_iyB7s"))
+
 
