@@ -1,10 +1,7 @@
-import requests
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
 import random
-from itertools import chain
-from pprint import pprint
 from itertools import islice, chain
 from sklearn.preprocessing import normalize
 from sklearn.cluster import DBSCAN, KMeans
@@ -20,10 +17,6 @@ def chunks(lst, n):
     """Yield successive n-sized chunks from lst."""
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
-
-
-def name():
-    return "Natasha"
 
 
 def give_top_artists(number_artists, token):
@@ -149,10 +142,6 @@ def create_data_for_clustering(user_track_features):
         for item in user_track_features
     ]
 
-    # pprint([(feats["track_features"], feats["artist_name"]) for feats in data])
-
-    # for features, artist in [(feats["track_features"], feats["artist_name"]) for feats in data]:
-
     df = pd.DataFrame([(feats["track_features"], feats["artist_name"], feats["artist_id"]) for feats in data], columns=["features", "artist", "artist_id"])
 
     averages = []
@@ -165,15 +154,6 @@ def create_data_for_clustering(user_track_features):
 
     average_df = pd.DataFrame(averages, columns=["artist", "artist_id", "embedding"])
 
-    # print(average_df[average_df.artist == "Molchat Doma"]["embedding"][0])
-    # normalized = normalize(list(averages.values()))
-
-
-    # pprint(normalized[:2])
-    # normalized = [feats["artist_features"] for feats in data]
-
-    # normalized_full = [{"artist_id": item["artist_id"], "artist_name": item["artist_name"], "artist_features": feats} for item, feats in zip(df.artist.unique(), normalized)]
-    #
     return average_df
 
 
@@ -198,25 +178,6 @@ def retrieve_clusters(n_top, n_related, token):
     clustering_data = create_data_for_clustering(track_feats)
 
     return cluster(clustering_data)
-
-    # print(cluster(create_data_for_clustering(user_track_features(10, 5, tok))))
-
-# print(normalized)
-
-
-# clustered = cluster(user_track_features(10, 5, "BQAdgh7WeVL8kf6LLuvjQZDivPXLkjP3h6aCug4C9GkUAed_Gxe-KkR-T5FZn_AjLFg70Gg5fIPtj5RIzF6mYOVjeNNHTfgxfC8Fckd5ST_dVkM5jtviCIDSTWqIwHPQRShKNsuYQDOZM0GqPJ5Sz6o1Ezx_hpHAOSf6YJeuP-I9dCI"))
-
-# user_track_features(10, 5, "BQAdgh7WeVL8kf6LLuvjQZDivPXLkjP3h6aCug4C9GkUAed_Gxe-KkR-T5FZn_AjLFg70Gg5fIPtj5RIzF6mYOVjeNNHTfgxfC8Fckd5ST_dVkM5jtviCIDSTWqIwHPQRShKNsuYQDOZM0GqPJ5Sz6o1Ezx_hpHAOSf6YJeuP-I9dCI")
-# print(clustered)
-
-# tok = "BQDFvJ7LjLEkBmhi3OW1Sw1C8ZM4fFuTVQrxZuOrJvU49yevKPEb82tWzJRWQPMXUM99Vu6BGswMagmUFb70dJacEasfZ3uD97NMm6lpqKRH7IEHw93MpgtWRF7enoTo-PiTO919rC_ZkMj58pXVftMI22Jfh4JAmrb2E4Y-OaensSI"
-
-# cluster(create_data_for_clustering(user_track_features(1, 1, tok)))
-
-# print(cluster(create_data_for_clustering(user_track_features(10, 5, tok))))
-
-
-# print(retrieve_clusters(2, 4, tok)[0])
 
 
 # Maybe do it differently: retrieve many more songs per artist, then take average embedding of the artist, and then cluster artists

@@ -72,7 +72,7 @@ def get_artist_concerts(artist_name, date_begin, date_end):
     return pruned_concerts
 
 
-def falls_within_latlong(latitude_venue, longitude_venue, latitude_city, longitude_city, radius=400):
+def falls_within_latlong(latitude_venue, longitude_venue, latitude_city, longitude_city, radius):
     latitude_city = (float(latitude_city) * pi) / 180
     latitude_venue = (float(latitude_venue) * pi) / 180
     longitude_venue = (float(longitude_venue) * pi) / 180
@@ -86,20 +86,17 @@ def falls_within_latlong(latitude_venue, longitude_venue, latitude_city, longitu
         return False
 
 
-def filter_concert_location(latitude, longitude, concert_list):
+def filter_concert_location(latitude, longitude, concert_list, radius=150):
     concerts_location = [item for item in concert_list if
                          falls_within_latlong(item["venue"]["latitude"], item["venue"]["longitude"], latitude,
-                                              longitude)]
+                                              longitude, radius)]
     return concerts_location
 
 
-def get_concerts(latitude, longitude, date_begin, date_end, artist):
+def get_concerts(latitude, longitude, date_begin, date_end, artist, radius=150):
     artist_concerts = get_artist_concerts(artist, date_begin, date_end)
     # print("Before:", artist_concerts)
-    artist_location = filter_concert_location(latitude, longitude, artist_concerts)
+    artist_location = filter_concert_location(latitude, longitude, artist_concerts, radius)
     # print("After:", artist_location)
     return artist_location
 
-
-# print(falls_within_latlong(51.0904473, 17.0659786, 48.141157, 11.581167))
-# print(get_concerts(48.194666, 11.60871, "2020-01-02", "2020-04-02", "Avril Lavigne"))
