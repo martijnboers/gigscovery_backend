@@ -7,31 +7,36 @@ client = Client(key)
 
 
 def prune_concerts(concert_list):
+
     pruned_concerts = []
 
-    first_item = concert_list[0]
+    try:
 
-    artist_name = first_item['artist']["name"]
-    artist_photo = first_item['artist']["thumb_url"]
-    artist_bit_id = first_item['artist']["id"]
-    first_item_datetime = first_item["datetime"]
-    first_item_artist_description = first_item["description"]
-    first_item_concert_id = first_item["id"]
-    first_item_offers = first_item["offers"]
-    first_item_venue = first_item["venue"]
+        first_item = concert_list[0]
 
-    pruned_concerts.append(
-        {
-            "name": artist_name,
-            "photo": artist_photo,
-            "artist_id": artist_bit_id,
-            "date": first_item_datetime,
-            "description": first_item_artist_description,
-            "concert_id": first_item_concert_id,
-            "offers": first_item_offers,
-            "venue": first_item_venue
-        }
-    )
+        artist_name = first_item['artist']["name"]
+        artist_photo = first_item['artist']["thumb_url"]
+        artist_bit_id = first_item['artist']["id"]
+        first_item_datetime = first_item["datetime"]
+        first_item_artist_description = first_item["description"]
+        first_item_concert_id = first_item["id"]
+        first_item_offers = first_item["offers"]
+        first_item_venue = first_item["venue"]
+
+        pruned_concerts.append(
+            {
+                "name": artist_name,
+                "photo": artist_photo,
+                "artist_id": artist_bit_id,
+                "date": first_item_datetime,
+                "description": first_item_artist_description,
+                "concert_id": first_item_concert_id,
+                "offers": first_item_offers,
+                "venue": first_item_venue
+            }
+        )
+    except:
+        pass
 
     def prune_concert(concert):
         pruned = {
@@ -46,8 +51,16 @@ def prune_concerts(concert_list):
 
         return pruned
 
-    for item in concert_list[1:]:
-        pruned_concerts.append(prune_concert(item))
+    try:
+        for item in concert_list[1:]:
+            try:
+                pruned_concerts.append(prune_concert(item))
+            except:
+                continue
+    except:
+        pass
+
+    # print(pruned_concerts)
 
     return pruned_concerts
 
@@ -59,7 +72,7 @@ def get_artist_concerts(artist_name, date_begin, date_end):
     return pruned_concerts
 
 
-def falls_within_latlong(latitude_venue, longitude_venue, latitude_city, longitude_city, radius=25):
+def falls_within_latlong(latitude_venue, longitude_venue, latitude_city, longitude_city, radius):
     latitude_city = (float(latitude_city) * pi) / 180
     latitude_venue = (float(latitude_venue) * pi) / 180
     longitude_venue = (float(longitude_venue) * pi) / 180
@@ -73,17 +86,17 @@ def falls_within_latlong(latitude_venue, longitude_venue, latitude_city, longitu
         return False
 
 
-def filter_concert_location(latitude, longitude, concert_list):
+def filter_concert_location(latitude, longitude, concert_list, radius=150):
     concerts_location = [item for item in concert_list if
                          falls_within_latlong(item["venue"]["latitude"], item["venue"]["longitude"], latitude,
-                                              longitude)]
+                                              longitude, radius)]
     return concerts_location
 
 
-def get_concerts(latitude, longitude, date_begin, date_end, artist):
+def get_concerts(latitude, longitude, date_begin, date_end, artist, radius=150):
     artist_concerts = get_artist_concerts(artist, date_begin, date_end)
-    artist_location = filter_concert_location(latitude, longitude, artist_concerts)
+    # print("Before:", artist_concerts)
+    artist_location = filter_concert_location(latitude, longitude, artist_concerts, radius)
+    # print("After:", artist_location)
     return artist_location
 
-
-# print(falls_within_latlong(48.194666, 11.608471, 48.141157, 11.581167))
