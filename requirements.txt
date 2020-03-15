@@ -1,3 +1,6 @@
 spotipy
 uvicorn
 fastapi
+python-bandsintown==1.0.0
+pandas
+scikit-learn
