@@ -11,6 +11,8 @@ gigscovery_app = FastAPI()
 origins = [
     "https://scoaring.com",
     "https://www.scoaring.com",
+    "https://www.scoaring.com/dscs/index.html",
+    "https://www.scoaring.com/dscs",
     "http://127.0.0.1:8000/",
     "http://localhost",
     "http://localhost:8000"
