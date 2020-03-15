@@ -177,20 +177,18 @@ def create_data_for_clustering(user_track_features):
     return average_df
 
 
-def cluster(clustered_data):
+def cluster(clustered_data, cluster_amount=5):
 
     data = clustered_data.embedding.tolist()
+    if data:
+        # algo = DBSCAN(eps=0.5, min_samples=5).fit_predict([item["artist_features"] for item in normalized])
+        algo = KMeans(cluster_amount, n_jobs=-1).fit_predict(data)
 
-    # print(clustered_data)
+        clusters = [(artist, artist_id, label) for artist, artist_id, label in zip(clustered_data["artist"], clustered_data["artist_id"], algo) if artist != "Various Artists"]
 
-    # algo = DBSCAN(eps=0.5, min_samples=5).fit_predict([item["artist_features"] for item in normalized])
-    algo = KMeans(5, n_jobs=-1).fit_predict(data)
-
-    # print(algo)
-
-    clusters = [(artist, artist_id, label) for artist, artist_id, label in zip(clustered_data["artist"], clustered_data["artist_id"], algo) if artist != "Various Artists"]
-
-    return clusters
+        return clusters
+    else:
+        return "No user data to form the bins!"
 
 
 def retrieve_clusters(n_top, n_related, token):
@@ -211,14 +209,14 @@ def retrieve_clusters(n_top, n_related, token):
 # user_track_features(10, 5, "BQAdgh7WeVL8kf6LLuvjQZDivPXLkjP3h6aCug4C9GkUAed_Gxe-KkR-T5FZn_AjLFg70Gg5fIPtj5RIzF6mYOVjeNNHTfgxfC8Fckd5ST_dVkM5jtviCIDSTWqIwHPQRShKNsuYQDOZM0GqPJ5Sz6o1Ezx_hpHAOSf6YJeuP-I9dCI")
 # print(clustered)
 
-tok = "BQDFvJ7LjLEkBmhi3OW1Sw1C8ZM4fFuTVQrxZuOrJvU49yevKPEb82tWzJRWQPMXUM99Vu6BGswMagmUFb70dJacEasfZ3uD97NMm6lpqKRH7IEHw93MpgtWRF7enoTo-PiTO919rC_ZkMj58pXVftMI22Jfh4JAmrb2E4Y-OaensSI"
+# tok = "BQDFvJ7LjLEkBmhi3OW1Sw1C8ZM4fFuTVQrxZuOrJvU49yevKPEb82tWzJRWQPMXUM99Vu6BGswMagmUFb70dJacEasfZ3uD97NMm6lpqKRH7IEHw93MpgtWRF7enoTo-PiTO919rC_ZkMj58pXVftMI22Jfh4JAmrb2E4Y-OaensSI"
 
 # cluster(create_data_for_clustering(user_track_features(1, 1, tok)))
 
 # print(cluster(create_data_for_clustering(user_track_features(10, 5, tok))))
 
 
-print(retrieve_clusters(2, 4, tok)[0])
+# print(retrieve_clusters(2, 4, tok)[0])
 
 
 # Maybe do it differently: retrieve many more songs per artist, then take average embedding of the artist, and then cluster artists
