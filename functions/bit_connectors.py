@@ -67,6 +67,7 @@ def prune_concerts(concert_list):
 
 def get_artist_concerts(artist_name, date_begin, date_end):
     date_range = f"{date_begin},{date_end}"
+    print("Date range:", date_range)
     concerts = client.artists_events(artist_name, date_range)
     pruned_concerts = prune_concerts(concert_list=concerts)
     return pruned_concerts
