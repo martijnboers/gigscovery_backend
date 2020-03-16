@@ -2,6 +2,7 @@ key = "bd482854c87eb7bc0c93d515ec3bbc29"
 
 from bandsintown import Client
 from math import asin, sqrt, sin, cos, pi
+from time import sleep
 
 client = Client(key)
 
@@ -67,10 +68,12 @@ def prune_concerts(concert_list):
 
 def get_artist_concerts(artist_name, date_begin, date_end):
     date_range = f"{date_begin},{date_end}"
-    print("Date range:", date_range)
-    concerts = client.artists_events(artist_name, date_range)
-    pruned_concerts = prune_concerts(concert_list=concerts)
-    return pruned_concerts
+    try:
+        concerts = client.artists_events(artist_name, date_range)
+        pruned_concerts = prune_concerts(concert_list=concerts)
+        return pruned_concerts
+    except:
+        return []
 
 
 def falls_within_latlong(latitude_venue, longitude_venue, latitude_city, longitude_city, radius):
