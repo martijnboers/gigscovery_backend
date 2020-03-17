@@ -11,12 +11,14 @@ Spotify:
 
 Bands in Town:
 
-        name:   	    Molchat Doma
-        latitude:       36.12714
-        longitude:      -115.1629562
-        city:	        Nijmegen
-        country:    	Netherlands
-        
+        "name": artist_name,
+         "photo": artist_photo,
+        "artist_id": artist_bit_id,
+        "date": first_item_datetime,
+        "description": first_item_artist_description,
+        "concert_id": first_item_concert_id,
+        "offers": first_item_offers,
+        "venue": first_item_venue
 
 What has been released in this repository?
 We are releasing the following: 
