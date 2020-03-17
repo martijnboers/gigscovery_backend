@@ -32,10 +32,10 @@ This endpoint will return certain track features for the artists returned from t
 Finally, concert clusters based on the songs of top artists and related artists from endpoint 2 will be returned in get_bins through latitude and longitude parameters. The date range as well as the radius of the top and related artists can be adjusted accordingly. 
 
 
-Disclaimer
+# Disclaimer
 
 This is not an official Spotify product.
 
-Contact information
+# Contact information
 
 For help or issues using Gigscovery, please submit a GitHub issue.
