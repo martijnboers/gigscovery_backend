@@ -6,8 +6,24 @@ Gigscovery is a personalized concert discovery service using Spotify data to pro
 Gigscovery was built with the Spotify API and BandsinTown API using the following endpoints: 
 
 Spotify:
-- Get User's Top Artists and Tracks
-- Get Audio Features for Several Tracks
+- Get User's Top Artists and Tracks":
+                "artist_id": item["artist_id"],
+                "artist_name": item["artist_name"]
+
+- Get Audio Features for Several Tracks:
+
+        "track_features":
+             [item["danceability"],
+              item["energy"],
+              item["key"],
+              item["loudness"],
+              item["mode"],
+              item["speechiness"],
+              item["acousticness"],
+              item["instrumentalness"],
+              item["liveness"],
+              item["valence"],
+              item["tempo"]
 
 Bands in Town:
 
