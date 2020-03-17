@@ -1,5 +1,4 @@
-# gigscovery_backend
-API for the Gigscovery functionality.
+# Gigscovery API
 
 What is Gigscovery?
 Gigscovery is a personalized concert discovery service using Spotify data to provide users with concerts for both known and related artists. Gigscovery was designed according to privacy by design principles and does not store any spotify-related user data on our servers. 
