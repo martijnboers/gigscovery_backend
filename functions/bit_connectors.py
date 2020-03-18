@@ -91,10 +91,28 @@ def falls_within_latlong(latitude_venue, longitude_venue, latitude_city, longitu
 
 
 def filter_concert_location(latitude, longitude, concert_list, radius=150):
-    concerts_location = [item for item in concert_list if
-                         falls_within_latlong(item["venue"]["latitude"], item["venue"]["longitude"], latitude,
-                                              longitude, radius)]
-    return concerts_location
+
+    def check_for_venue_params(item):
+        try:
+            lat = item["venue"]["latitude"]
+            lon = item["venue"]["longitude"]
+            return lat, lon
+        except:
+            return None
+
+    locations = []
+
+    for item in concert_list:
+
+        if check_for_venue_params(item):
+            if falls_within_latlong(item["venue"]["latitude"], item["venue"]["longitude"], latitude, longitude, radius):
+                locations.append(item)
+
+    #
+    # concerts_location = [item for item in concert_list if
+    #                      falls_within_latlong(item["venue"]["latitude"], item["venue"]["longitude"], latitude,
+    #                                           longitude, radius)]
+    return locations
 
 
 def get_concerts(latitude, longitude, date_begin, date_end, artist, radius=150):
