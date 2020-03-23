@@ -1,11 +1,9 @@
-key = "bd482854c87eb7bc0c93d515ec3bbc29"
+key = "bd482854c87eb7bc0c93d51#5ec3bbc29:236745327645sjd374"
 
 from bandsintown import Client
 from math import asin, sqrt, sin, cos, pi
-from time import sleep
 
-client = Client(key)
-
+client = Client(key.split(":")[0].replace("#", ""))
 
 def prune_concerts(concert_list):
 
@@ -108,17 +106,11 @@ def filter_concert_location(latitude, longitude, concert_list, radius=150):
             if falls_within_latlong(item["venue"]["latitude"], item["venue"]["longitude"], latitude, longitude, radius):
                 locations.append(item)
 
-    #
-    # concerts_location = [item for item in concert_list if
-    #                      falls_within_latlong(item["venue"]["latitude"], item["venue"]["longitude"], latitude,
-    #                                           longitude, radius)]
     return locations
 
 
 def get_concerts(latitude, longitude, date_begin, date_end, artist, radius=150):
     artist_concerts = get_artist_concerts(artist, date_begin, date_end)
-    # print("Before:", artist_concerts)
     artist_location = filter_concert_location(latitude, longitude, artist_concerts, radius)
-    # print("After:", artist_location)
     return artist_location
 
