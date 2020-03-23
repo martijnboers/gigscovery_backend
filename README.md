@@ -7,7 +7,7 @@ Gigscovery was built with the Spotify API and BandsInTown API using the followin
 
 Spotify API:
 
-- [Get User's Top Artists and Tracks"](https://developer.spotify.com/console/get-current-user-top-artists-and-tracks/)
+- [Get User's Top Artists and Tracks](https://developer.spotify.com/console/get-current-user-top-artists-and-tracks/)
               
 - [Get Audio Features for Several Tracks](https://developer.spotify.com/console/get-audio-features-several-tracks/):
 
@@ -26,7 +26,7 @@ Spotify API:
 
 Bands in Town API:
 
-- [Get User's Top Artists and Tracks"](https://rest.bandsintown.com/artists/{artistName}/events?app_id=yourkey)
+- [Get User's Top Artists and Tracks](https://rest.bandsintown.com/artists/{artistName}/events?app_id=yourkey)
 
         "name": artist_name,
          "photo": artist_photo,
@@ -40,15 +40,15 @@ Bands in Town API:
 What has been released in this repository?
 We are releasing the following: 
 
-- #ENDPOINT 1: USERS ARTIST (TOP + RELATED)
+- ENDPOINT 1: USERS ARTIST (TOP + RELATED)
 
 This endpoint will return both top and related artists based on a Spotify user token, the parameters number of top and related artists can be changed accordingly. 
 
-- #ENDPOINT 2: USER'S TRACKS FEATURE SPACE
+- ENDPOINT 2: USER'S TRACKS FEATURE SPACE
 
 This endpoint will return certain track features for the artists returned from the first endpoint above. 
 
-- #ENDPOINT 3: GET USER BINS
+- ENDPOINT 3: GET USER BINS
 
 Finally, concert clusters based on the songs of top artists and related artists from endpoint 2 will be returned in get_bins through latitude and longitude parameters. The date range as well as the radius around the given lcoation, and the top and related artists can be adjusted accordingly. 
 
