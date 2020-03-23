@@ -11,19 +11,28 @@ def get_cluster_concerts(latitude, longitude, date_begin, date_end, bands_with_c
     if type(bands_with_clusters) == str:
         return "Not enough user data to create clusters!"
 
+    def add_spotify_id(list_of_concerts, spotify_id):
+        for concert in list_of_concerts:
+            concert["spotify_id"] = spotify_id
+        return list_of_concerts
+
+    def add_flag(list_of_concerts, flag):
+        for concert in list_of_concerts:
+            concert["flag"] = flag
+        return list_of_concerts
+
     clusters = defaultdict(list)
 
     for item in bands_with_clusters:
-
-        clusters[item[2]].append([item[0], item[1]])
+        clusters[item[2]].append([item[0], item[1], item[3]])
 
     bins = []
 
     for key, value in clusters.items():
         bin = {}
         bin["id"] = key
-        bin["bin_reason"] = [{"band_name": band_name, "band_spotify_id": band_id} for band_name, band_id in value]
-        bin["concerts"] = [get_concerts(latitude, longitude, date_begin, date_end, band_name, radius) for band_name, _ in value]
+        bin["bin_reason"] = [{"band_name": band_name, "band_spotify_id": band_id, "band_flag": band_flag} for band_name, band_id, band_flag in value]
+        bin["concerts"] = [add_flag(add_spotify_id(get_concerts(latitude, longitude, date_begin, date_end, band_name, radius), band_id), band_flag) for band_name, band_id, band_flag in value]
         bins.append(bin)
 
     return bins
@@ -49,3 +58,5 @@ def get_bins(latitude, longitude, date_begin, date_end, token, radius=150, top_a
     bins = get_cluster_concerts(latitude, longitude, date_begin, date_end, clusters, radius)
     return filter_bins(bins)
 
+
+# print((52.516543, 13.404105, "2020-03-23", "2021-04-01", "Matthias Reim", 50))

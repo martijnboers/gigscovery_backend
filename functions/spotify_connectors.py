@@ -7,6 +7,7 @@ from sklearn.preprocessing import normalize
 from sklearn.cluster import DBSCAN, KMeans
 import numpy as np
 import pandas as pd
+from pprint import pprint
 
 
 os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
@@ -18,6 +19,10 @@ def chunks(lst, n):
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
 
+def add_top_flag(artist, flag):
+    artist["flag"] = flag
+    return artist
+
 
 def give_top_artists(number_artists, token):
     sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(),
@@ -25,7 +30,7 @@ def give_top_artists(number_artists, token):
 
     current_user_top_artists = sp.current_user_top_artists(limit=number_artists, offset=0, time_range='medium_term')[
         'items']
-    new_artists = [prune_artist(artist) for artist in current_user_top_artists]
+    new_artists = [add_top_flag(prune_artist(artist), "top") for artist in current_user_top_artists]
     return new_artists
 
 
@@ -81,14 +86,20 @@ def get_audio_features_tracks(list_all_artists, token):
 def user_artists(n_of_top_artists, n_related_artists, token):
     top_artists = give_top_artists(n_of_top_artists, token)
 
+    # print(f"TOP ARTISTS: {top_artists}")
+
     related_artists = [get_random_related_artists(artist['id'], n_related_artists, token) for artist in top_artists]
 
-    related_artists = list(chain.from_iterable(related_artists))
+    related_artists = [add_top_flag(artist, "related") for artist in list(chain.from_iterable(related_artists))]
 
     all_artists = top_artists + related_artists
 
     return all_artists
 
+def add_flag_to_tracks(tracks, flag):
+    for track in tracks:
+        track["flag"] = flag
+    return tracks
 
 # ENDPOINT 2 GET USERS FEATURE SPACE (song features of tracks of all artists)
 def user_track_features(n_of_top_artists, n_related_artists, token):
@@ -97,9 +108,10 @@ def user_track_features(n_of_top_artists, n_related_artists, token):
 
     all_artists = user_artists(n_of_top_artists, n_related_artists, token)
 
-    toptracks_artists = [get_top_tracks_artist(artists['id'], token) for artists in all_artists]
+    toptracks_artists = [add_flag_to_tracks(get_top_tracks_artist(artists['id'], token), artists["flag"]) for artists in all_artists]
 
     toptracks_artists = list(chain.from_iterable(toptracks_artists))
+
     #
     features_all_tracks = []
 
@@ -113,6 +125,7 @@ def user_track_features(n_of_top_artists, n_related_artists, token):
         features_new["artist_name"] = track['album']["artists"][0]["name"]
         features_new["artist_id"] = track['album']["artists"][0]["id"]
         features_new["track_name"] = track['name']
+        features_new["flag"] = track["flag"]
         features_all_tracks_with_names.append(features_new)
 
     return features_all_tracks_with_names
@@ -125,6 +138,7 @@ def create_data_for_clustering(user_track_features):
     data = [
         {"artist_id": item["artist_id"],
          "artist_name": item["artist_name"],
+         "flag": item["flag"],
          "track_features":
              [item["danceability"],
               item["energy"],
@@ -142,17 +156,18 @@ def create_data_for_clustering(user_track_features):
         for item in user_track_features
     ]
 
-    df = pd.DataFrame([(feats["track_features"], feats["artist_name"], feats["artist_id"]) for feats in data], columns=["features", "artist", "artist_id"])
+    df = pd.DataFrame([(feats["track_features"], feats["artist_name"], feats["artist_id"], feats["flag"]) for feats in data], columns=["features", "artist", "artist_id", "flag"])
 
     averages = []
 
     for artst in df.artist.unique():
         all_artst_tracks = df[df.artist == artst]["features"]
         artist_id = df[df.artist == artst]["artist_id"].unique()[0]
+        artist_flag = df[df.artist == artst]["flag"].unique()[0]
         average = normalize(np.mean(all_artst_tracks.tolist(), axis=0).reshape(1, -1)).flatten()
-        averages.append((artst, artist_id, average))
+        averages.append((artst, artist_id, average, artist_flag))
 
-    average_df = pd.DataFrame(averages, columns=["artist", "artist_id", "embedding"])
+    average_df = pd.DataFrame(averages, columns=["artist", "artist_id", "embedding", "flag"])
 
     return average_df
 
@@ -164,7 +179,7 @@ def cluster(clustered_data, cluster_amount=5):
         # algo = DBSCAN(eps=0.5, min_samples=5).fit_predict([item["artist_features"] for item in normalized])
         algo = KMeans(cluster_amount, n_jobs=-1).fit_predict(data)
 
-        clusters = [(artist, artist_id, label) for artist, artist_id, label in zip(clustered_data["artist"], clustered_data["artist_id"], algo) if artist != "Various Artists"]
+        clusters = [(artist, artist_id, label, flag) for artist, artist_id, label, flag in zip(clustered_data["artist"], clustered_data["artist_id"], algo, clustered_data["flag"]) if artist != "Various Artists"]
 
         return clusters
     else:
@@ -179,6 +194,10 @@ def retrieve_clusters(n_top, n_related, token):
 
     return cluster(clustering_data)
 
+
+# pprint(user_track_features(1, 1, "BQCHkLWF3gzTFt5zyUOcRhJb2zwuAxzNoOjD1aR3TM0kih6rkwGeUYMSlplapyIPOAwY0gDPWu-b8ZPuVFaBfwALMkLKZxoGrGrCb5rM4n4Ra2yjBIz88Fvt99-wUhxDeBGp7XIZ2k0kx6cWrn8VaDq-SGVRapY8yW8dcsU"))
+
+# print(retrieve_clusters(2, 2, "BQCHkLWF3gzTFt5zyUOcRhJb2zwuAxzNoOjD1aR3TM0kih6rkwGeUYMSlplapyIPOAwY0gDPWu-b8ZPuVFaBfwALMkLKZxoGrGrCb5rM4n4Ra2yjBIz88Fvt99-wUhxDeBGp7XIZ2k0kx6cWrn8VaDq-SGVRapY8yW8dcsU"))
 
 # Maybe do it differently: retrieve many more songs per artist, then take average embedding of the artist, and then cluster artists
 # Or we use the spotify endpoint that generates recommendation seeds.
