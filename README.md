@@ -50,7 +50,7 @@ This endpoint will return certain track features for the artists returned from t
 
 - ENDPOINT 3: GET USER BINS
 
-Finally, concert clusters based on the songs of top artists and related artists from endpoint 2 will be returned in get_bins through latitude and longitude parameters. The date range as well as the radius around the given lcoation, and the top and related artists can be adjusted accordingly. 
+Finally, concert clusters based on the songs of top artists and related artists from endpoint 2 will be returned in get_bins through latitude and longitude parameters. The date range as well as the radius around the given location, and the top and related artists can be adjusted accordingly. 
 
 
 # Disclaimer
