@@ -7,11 +7,11 @@ from sklearn.preprocessing import normalize
 from sklearn.cluster import DBSCAN, KMeans
 import numpy as np
 import pandas as pd
-from pprint import pprint
 
+client_keys = "adba2@5a186284c00b4551d8532c7e066$0c4912fca560400c86f33449167e58e9@"
 
-os.environ['SPOTIPY_CLIENT_ID'] = "adba25a186284c00b4551d8532c7e066"
-os.environ['SPOTIPY_CLIENT_SECRET'] = "0c4912fca560400c86f33449167e58e9"
+os.environ['SPOTIPY_CLIENT_ID'] = client_keys.split('$')[0].replace("@", "")
+os.environ['SPOTIPY_CLIENT_SECRET'] = client_keys.split('$')[1].replace("@", "")
 
 
 def chunks(lst, n):
@@ -86,8 +86,6 @@ def get_audio_features_tracks(list_all_artists, token):
 def user_artists(n_of_top_artists, n_related_artists, token):
     top_artists = give_top_artists(n_of_top_artists, token)
 
-    # print(f"TOP ARTISTS: {top_artists}")
-
     related_artists = [get_random_related_artists(artist['id'], n_related_artists, token) for artist in top_artists]
 
     related_artists = [add_top_flag(artist, "related") for artist in list(chain.from_iterable(related_artists))]
@@ -112,7 +110,6 @@ def user_track_features(n_of_top_artists, n_related_artists, token):
 
     toptracks_artists = list(chain.from_iterable(toptracks_artists))
 
-    #
     features_all_tracks = []
 
     for chunk in chunks(toptracks_artists, 50):
@@ -132,8 +129,6 @@ def user_track_features(n_of_top_artists, n_related_artists, token):
 
 
 def create_data_for_clustering(user_track_features):
-
-    # pprint(user_track_features)
 
     data = [
         {"artist_id": item["artist_id"],
@@ -193,12 +188,3 @@ def retrieve_clusters(n_top, n_related, token):
     clustering_data = create_data_for_clustering(track_feats)
 
     return cluster(clustering_data)
-
-
-# pprint(user_track_features(1, 1, "BQCHkLWF3gzTFt5zyUOcRhJb2zwuAxzNoOjD1aR3TM0kih6rkwGeUYMSlplapyIPOAwY0gDPWu-b8ZPuVFaBfwALMkLKZxoGrGrCb5rM4n4Ra2yjBIz88Fvt99-wUhxDeBGp7XIZ2k0kx6cWrn8VaDq-SGVRapY8yW8dcsU"))
-
-# print(retrieve_clusters(2, 2, "BQCHkLWF3gzTFt5zyUOcRhJb2zwuAxzNoOjD1aR3TM0kih6rkwGeUYMSlplapyIPOAwY0gDPWu-b8ZPuVFaBfwALMkLKZxoGrGrCb5rM4n4Ra2yjBIz88Fvt99-wUhxDeBGp7XIZ2k0kx6cWrn8VaDq-SGVRapY8yW8dcsU"))
-
-# Maybe do it differently: retrieve many more songs per artist, then take average embedding of the artist, and then cluster artists
-# Or we use the spotify endpoint that generates recommendation seeds.
-# We could also request top tracks from spotify instead of retrieving top artists and getting top songs from them.
