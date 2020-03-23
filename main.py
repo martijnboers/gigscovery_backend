@@ -1,5 +1,3 @@
-
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from functions.spotify_connectors import user_artists, user_track_features
@@ -26,21 +24,6 @@ gigscovery_app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# @gigscovery_app.get("/")
-# async def root():
-#     return {"message": " Gigscovery API"}
-
-
-# @gigscovery_app.get("/user_artists/{n_artists}")
-# async def user_artists_endpoint(n_artists: int):
-#     return {"users_artists": user_artists(n_artists)}
-
-
-# #ENDPOINT BiT: GET CONCERTS
-# @gigscovery_app.get("/get_concerts/")
-# async def get_concerts_endpoint(artist: str, latitude: str, longitude: str, date_begin: str, date_end: str):
-#     return {"get_concerts": get_concerts(latitude, longitude, date_begin, date_end, artist)}
 
 
 #ENDPOINT 1: USERS ARTIST (TOP + RELATED)
