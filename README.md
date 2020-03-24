@@ -71,6 +71,28 @@ This endpoint will return the musical track features for the artists returned fr
 
 Our main endpoint which combines all the needed steps (retrieving top artists, filling with related artists, retrieving the music features, clustering the artists based on those features, retrieving the concerts for each of the cluster and finally formatting the final "bins"). We call a single concert cluster a "bin" and it is formed by concerts of the artists which produce similar music, based on the musical features.
 
+# Usage
+
+Assuming a clean environment that has Python 3.6+ installed, perform the following steps to start the API:
+
+1) Clone this repository and cd into it:
+
+   `git clone https://github.com/mabergerx/gigscovery_backend.git && cd gigscovery_backend`
+
+2) (Optional) Create a virtual environment for the project by using [`virtualenv`](https://virtualenv.pypa.io/en/latest/):
+
+   `virtualenv -p python3.6 ../.gigscovery_venv`
+
+   Once created, activate the environment by using `source ../.gigscovery_venv/bin/activate` 
+3) Install the requirements:  
+   
+   `pip install -r requirements.txt`
+  
+4) Once the requirements are all installed, start the server through [`uvicorn`](https://www.uvicorn.org/):
+
+   `uvicorn main:gigscovery_app --reload`
+   
+5) Now, browse to http://localhost:8000/docs to access the Swagger documentation for the API. There, you can try out the endpoints and get the corresponding `curl` statements. 
 
 # Disclaimer
 
