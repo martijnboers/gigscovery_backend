@@ -24,7 +24,7 @@ To retrieve the related artists for each of the retrieved top artists. We do thi
 To retrieve the audio features of the songs of the relevant artists. We use these features to cluster within the "interest domain" of a user, to create various multiple mixes of concerts, based on similar music.
 
 
-Bands in Town API:
+BandsInTown API:
 
 - [Get Artist's Events](https://rest.bandsintown.com/artists/{artistName}/events?app_id=yourkey)
 
