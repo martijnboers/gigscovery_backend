@@ -64,7 +64,7 @@ This endpoint will return the musical track features for the artists returned fr
   *longitude*: *float* The longitude coordinate of the location where we search for concerts.  
   *date_begin*: *string* The starting date of the date range for our concert search.  
   *date_end*: *string* The starting date of the date range for our concert search.  
-  *radius*: *int* The radius in kilometers around the search coordinates within which we search for concerts.  
+  *radius*: *int* The radius in kilometers around the search coordinates within which we search for concerts. *Default = 25*  
   *top_artists*: *float* Number of **top** artists retrieved for the current user. *Default = 5*  
   *related_artists*: *float* Number of **related** artists per top artist retrieved for the current user. *Default = 5*  
   *token*: *string* The issued, scoped Spotify token for the current user.
